@@ -9,6 +9,7 @@ const values = [
 let deck = [];
 let playerHand = [];
 let dealerHand = [];
+let hideDealer = true;
 
 const playerCards = document.getElementById("player-cards");
 const dealerCards = document.getElementById("dealer-cards");
@@ -60,15 +61,22 @@ function getCard()
 
 function showCards()
 {
-
 	dealerCards.innerHTML = "";
 	playerCards.innerHTML = "";
 
-	dealerHand.forEach(card =>
+	dealerHand.forEach((card, index) =>
 	{
 		const cardElement = document.createElement("div");
 		cardElement.classList.add("card");
-		cardElement.textContent = card.value + card.suit;
+
+		if (hideDealer && index === 1)
+		{
+			cardElement.textContent = "??";
+		}
+		else
+		{
+			cardElement.textContent = card.value + card.suit;
+		}
 
 		dealerCards.appendChild(cardElement);
 	});
@@ -85,7 +93,6 @@ function showCards()
 
 function calculateScore(hand)
 {
-
 	let score = 0;
 	let numberAces = 0;
 
@@ -122,16 +129,39 @@ function calculateScore(hand)
 
 function updateScores()
 {
+	if (dealerHand.length > 0)
+	{
+		if (hideDealer)
+		{
+			dealerScoreDisplay.textContent =
+				calculateScore([dealerHand[0]]);
+		}
+		else
+		{
+			dealerScoreDisplay.textContent =
+				calculateScore(dealerHand);
+		}
+	}
+	else
+	{
+		dealerScoreDisplay.textContent = 0;
+	}
 
-	dealerScoreDisplay.textContent = calculateScore(dealerHand);
-	playerScoreDisplay.textContent = calculateScore(playerHand);
+	if (playerHand.length > 0)
+	{
+		playerScoreDisplay.textContent = calculateScore(playerHand);
+	}
+	else
+	{
+		playerScoreDisplay.textContent = 0;
+	}
 }
 
 function deal()
 {
-
 	playerHand = [];
 	dealerHand = [];
+	hideDealer = true;
 
 	makeDeck();
 
@@ -148,11 +178,37 @@ function deal()
 
 	dealButton.textContent = "Hit";
 	passButton.disabled = false;
+
+	const playerScore = calculateScore(playerHand);
+	const dealerScore = calculateScore(dealerHand);
+
+	if (dealerScore === 21 && playerScore === 21)
+	{
+		message.textContent = "It's a tie!";
+		hideDealer = false;
+		showCards();
+		updateScores();
+		endGame();
+	}
+	else if (dealerScore === 21)
+	{
+		message.textContent = "Dealer got Blackjack! They won!";
+		dealerWins++;
+		hideDealer = false;
+		showCards();
+		updateScores();
+		endGame();
+	}
+	else if (playerScore === 21)
+	{
+		message.textContent = "Blackjack! You won!";
+		playerWins++;
+		endGame();
+	}
 }
 
 function hit()
 {
-
 	playerHand.push(getCard());
 
 	showCards();
@@ -163,7 +219,6 @@ function hit()
 
 function checkPlayer()
 {
-
 	const score = calculateScore(playerHand);
 
 	if (score === 21)
@@ -182,6 +237,7 @@ function checkPlayer()
 
 function dealerPlays()
 {
+	hideDealer = false;
 
 	let playerScore = calculateScore(playerHand);
 	let dealerScore = calculateScore(dealerHand);
@@ -202,7 +258,6 @@ function dealerPlays()
 
 function determineWinner()
 {
-
 	const playerScore = calculateScore(playerHand);
 	const dealerScore = calculateScore(dealerHand);
 
@@ -250,11 +305,11 @@ function gameRestart()
 
 	dealButton.textContent = "Deal";
 	passButton.disabled = false;
+	message.textContent = "Start a game by hitting Deal!";
 }
 
 dealButton.addEventListener("click", () =>
 {
-
 	if (dealButton.textContent === "Deal")
 	{
 		deal();
