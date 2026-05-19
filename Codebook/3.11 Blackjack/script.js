@@ -13,6 +13,11 @@ let dealerHand = [];
 const playerCards = document.getElementById("player-cards");
 const dealerCards = document.getElementById("dealer-cards");
 
+const playerWinsDisplay = document.getElementById("player-wins");
+let playerWins = 0;
+const dealerWinsDisplay = document.getElementById("dealer-wins");
+let dealerWins = 0;
+
 const playerScoreDisplay = document.getElementById("player-score");
 const dealerScoreDisplay = document.getElementById("dealer-score");
 
@@ -142,6 +147,7 @@ function deal()
 	message.textContent = "";
 
 	dealButton.textContent = "Hit";
+	passButton.disabled = false;
 }
 
 function hit()
@@ -163,11 +169,13 @@ function checkPlayer()
 	if (score === 21)
 	{
 		message.textContent = "Blackjack! You won!";
+		playerWins++;
 		endGame();
 	}
 	else if (score > 21)
 	{
 		message.textContent = "You're broke!";
+		dealerWins++;
 		endGame();
 	}
 }
@@ -178,10 +186,7 @@ function dealerPlays()
 	let playerScore = calculateScore(playerHand);
 	let dealerScore = calculateScore(dealerHand);
 
-	while (
-		dealerScore <= 16 &&
-		dealerScore !== playerScore
-	)
+	while (dealerScore <= 16 && dealerScore !== playerScore)	
 	{
 
 		dealerHand.push(getCard());
@@ -204,14 +209,19 @@ function determineWinner()
 	if (dealerScore > 21)
 	{
 		message.textContent = "Dealer broke. You win!";
+		playerWins++;
 	}
 	else if (playerScore > dealerScore)
 	{
 		message.textContent = "You win!";
+		playerWins++;
+
 	}
 	else if (dealerScore > playerScore)
 	{
 		message.textContent = "Dealer wins!";
+		dealerWins++;
+
 	}
 	else
 	{
@@ -223,9 +233,23 @@ function determineWinner()
 
 function endGame()
 {
-
-	dealButton.disabled = true;
+	// dealButton.disabled = true;
+	dealButton.textContent = "Restart";
 	passButton.disabled = true;
+	playerWinsDisplay.textContent = playerWins;
+	dealerWinsDisplay.textContent = dealerWins;
+}
+
+function gameRestart()
+{
+	makeDeck();
+	playerHand = [];
+	dealerHand = [];
+	updateScores();
+	showCards();
+
+	dealButton.textContent = "Deal";
+	passButton.disabled = false;
 }
 
 dealButton.addEventListener("click", () =>
@@ -235,9 +259,13 @@ dealButton.addEventListener("click", () =>
 	{
 		deal();
 	}
-	else
+	else if (dealButton.textContent === "Hit")
 	{
 		hit();
+	}
+	else if (dealButton.textContent === "Restart")
+	{
+		gameRestart();
 	}
 });
 
