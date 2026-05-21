@@ -51,7 +51,6 @@ function makeDeck()
 function getCard()
 {
 	const randomIndex = Math.floor(Math.random() * deck.length);
-
 	const card = deck[randomIndex];
 
 	deck.splice(randomIndex, 1);
@@ -213,7 +212,6 @@ function hit()
 
 	showCards();
 	updateScores();
-
 	checkPlayer();
 }
 
@@ -244,7 +242,6 @@ function dealerPlays()
 
 	while (dealerScore <= 16 && dealerScore !== playerScore)	
 	{
-
 		dealerHand.push(getCard());
 
 		dealerScore = calculateScore(dealerHand);
@@ -270,13 +267,11 @@ function determineWinner()
 	{
 		message.textContent = "You win!";
 		playerWins++;
-
 	}
 	else if (dealerScore > playerScore)
 	{
 		message.textContent = "Dealer wins!";
 		dealerWins++;
-
 	}
 	else
 	{
