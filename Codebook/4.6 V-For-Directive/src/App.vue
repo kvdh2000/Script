@@ -35,9 +35,9 @@
 	ul 
 	{
 		list-style: none;
-	padding: 0;
-	width: 400px;
-	margin: auto;
+		width: 400px;
+		margin: auto;
+		padding: 0;
 	}
 
 	li 
