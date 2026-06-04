@@ -1,7 +1,16 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
+	import { ref } from 'vue';
+	import Child from './components/Child.vue';
+
+	const message = ref('');
 </script>
 
 <template>
-  <HelloWorld />
+	<div>
+		<Child v-model="message" />
+		
+		<p>
+			Message: {{ message }}
+		</p>
+	</div>
 </template>
