@@ -41,6 +41,11 @@
 		dice.value.filter(die => die === 6).length * 6
 	)
 
+	function dieTypes(dieType)
+	{
+		return dice.value.filter(die => die == dieType).length * dieType
+	}
+
 	function hasCount(amount) {
 		return Object.values(counts.value).includes(amount)
 	}
@@ -125,27 +130,27 @@
 				<tbody>
 					<tr>
 						<td>Ones</td>
-						<td>{{ ones }}</td>
+						<td>{{ dieTypes(1) }}</td>
 					</tr>
 					<tr>
 						<td>Twos</td>
-						<td>{{ twos }}</td>
+						<td>{{ dieTypes(2) }}</td>
 					</tr>
 					<tr>
 						<td>Threes</td>
-						<td>{{ threes }}</td>
+						<td>{{ dieTypes(3) }}</td>
 					</tr>
 					<tr>
 						<td>Fours</td>
-						<td>{{ fours }}</td>
+						<td>{{ dieTypes(4) }}</td>
 					</tr>
 					<tr>
 						<td>Fives</td>
-						<td>{{ fives }}</td>
+						<td>{{ dieTypes(5) }}</td>
 					</tr>
 					<tr>
 						<td>Sixes</td>
-						<td>{{ sixes }}</td>
+						<td>{{ dieTypes(6) }}</td>
 					</tr>
 				</tbody>
 				<tfoot>
