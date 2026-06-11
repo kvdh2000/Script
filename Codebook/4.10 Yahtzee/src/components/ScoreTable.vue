@@ -18,7 +18,7 @@
 	})
 	
 	const ones = computed(() =>
-  dice.value.filter(die => die === 1).length * 1
+  	dice.value.filter(die => die === 1).length * 1
 	)
 
 	const twos = computed(() =>
