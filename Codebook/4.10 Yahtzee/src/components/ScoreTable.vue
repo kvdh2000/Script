@@ -1,98 +1,87 @@
 <script setup>
-	import { computed } from 'vue'
+	import { computed } from "vue";
 
-	const dice = defineModel()
+	const dice = defineModel();
 
 	const counts = computed(() => {
-		const frequency = {}
+		const frequency = {};
 
 		for (const die of dice.value) {
-			frequency[die] = (frequency[die] || 0) + 1
+			frequency[die] = (frequency[die] || 0) + 1;
 		}
 
-		return frequency
-	})
+		return frequency;
+	});
 
-	function dieTypes(dieType)
-	{
-		if(dieType === 0) return dice.value.reduce((sum, die) => sum + die, 0) 
-		return dice.value.filter(die => die == dieType).length * dieType
+	function dieTypes(dieType) {
+		if (dieType === 0) return dice.value.reduce((sum, die) => sum + die, 0);
+		return dice.value.filter(die => die == dieType).length * dieType;
 	}
 
-	function hasCount(amount) 
-	{
-		return Object.values(counts.value).includes(amount)
+	function hasCount(amount) {
+		return Object.values(counts.value).includes(amount);
 	}
-	
-	function ofKind(die)
-	{	
-		for (const value in counts.value) 
-		{
-			if (counts.value[value] >= die) 
-			{
-			return value * die
+
+	function ofKind(die) {
+		for (const value in counts.value) {
+			if (counts.value[value] >= die) {
+				return value * die;
 			}
 		}
 
-		return 0
+		return 0;
 	}
 
-	const threeKind = computed(() => ofKind(3))
+	const threeKind = computed(() => ofKind(3));
 
-	const fourKind = computed(() => ofKind(4))
+	const fourKind = computed(() => ofKind(4));
 
-	const fullHouse = computed(() =>
-		hasCount(3) && hasCount(2) ? 25 : 0
-	)
-	
-	function straight(n)
-	{
-		const sorted = [...new Set(dice.value)].sort((a, b) => a - b)
+	const fullHouse = computed(() => (hasCount(3) && hasCount(2) ? 25 : 0));
 
-		let streak = 1
+	function straight(n) {
+		const sorted = [...new Set(dice.value)].sort((a, b) => a - b);
 
-		for (let i = 1; i < sorted.length; i++)
-		{
-			if (sorted[i] === sorted[i - 1] + 1)
-			{
-				streak++
+		let streak = 1;
 
-				if (streak >= n)
-				{
-					return true
+		for (let i = 1; i < sorted.length; i++) {
+			if (sorted[i] === sorted[i - 1] + 1) {
+				streak++;
+
+				if (streak >= n) {
+					return true;
 				}
-			}
-			else
-			{
-				streak = 1
+			} else {
+				streak = 1;
 			}
 		}
 
-		return false
+		return false;
 	}
 
+	const smallStraight = computed(() => (straight(4) ? 30 : 0));
 
-	const smallStraight = computed(() => straight(4) ? 30 : 0)
+	const largeStraight = computed(() => (straight(5) ? 40 : 0));
 
-	const largeStraight = computed(() => straight(5) ? 40 : 0)
+	const yahtzee = computed(() => (hasCount(5) ? 50 : 0));
 
-	const yahtzee = computed(() => hasCount(5) ? 50 : 0)
-
-	const upperScores = computed(() => dieTypes(0))
-	const lowerScores = computed(() => threeKind.value+fourKind.value+smallStraight.value+largeStraight.value+yahtzee.value)	
+	const upperScores = computed(() => dieTypes(0));
+	const lowerScores = computed(
+		() => threeKind.value + fourKind.value + smallStraight.value + largeStraight.value + yahtzee.value,
+	);
 </script>
 
 <template>
 	<h2>Scores</h2>
 
-  <div class="scores">
-    <div>
+	<div class="scores">
+		<div>
 			<table>
 				<thead>
 					<tr>
 						<th colspan="2">
-							Upper 
-							<br> Section	
+							Upper
+							<br />
+							Section
 						</th>
 					</tr>
 				</thead>
@@ -135,8 +124,9 @@
 				<thead>
 					<tr>
 						<th colspan="2">
-							Lower 
-							<br> Section	
+							Lower
+							<br />
+							Section
 						</th>
 					</tr>
 				</thead>
@@ -174,31 +164,30 @@
 				</tfoot>
 			</table>
 		</div>
-  </div>
+	</div>
 
 	<h2>
-		Overall Total: 
-		{{ upperScores+lowerScores }}
+		Overall Total:
+		{{ upperScores + lowerScores }}
 	</h2>
 </template>
 
 <style scoped>
-	.scores
-	{
+	.scores {
 		text-align: center;
-	  margin: 0 auto;
+		margin: 0 auto;
 		display: flex;
 		justify-content: space-around;
 	}
-	
-	table, th, td
-	{
+
+	table,
+	th,
+	td {
 		border: 1px solid;
 		padding: 1px;
 	}
 
-	tbody
-	{
+	tbody {
 		padding: 3px;
 	}
 </style>

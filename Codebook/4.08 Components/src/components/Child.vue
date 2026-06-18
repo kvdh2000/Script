@@ -4,9 +4,9 @@
 
 <template>
 	<div>
-    <input 
-			v-model="message" 
-			placeholder="Type something..." 
+		<input
+			v-model="message"
+			placeholder="Type something..."
 		/>
-  </div>
+	</div>
 </template>
