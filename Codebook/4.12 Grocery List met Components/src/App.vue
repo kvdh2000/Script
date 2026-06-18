@@ -24,12 +24,6 @@
 			amount: 0,
 		},
 	]);
-
-	const tasks = ref([
-		{ task: "Do groceries", completed: false },
-		{ task: "Do dishes", completed: true },
-		{ task: "Walk dog", completed: false },
-	]);
 </script>
 
 <template>
