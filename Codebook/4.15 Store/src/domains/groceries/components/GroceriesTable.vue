@@ -103,10 +103,6 @@
 		width: 200px;
 	}
 
-	.deleteCol {
-		text-align: center;
-	}
-
 	.borderless {
 		border: none;
 	}
