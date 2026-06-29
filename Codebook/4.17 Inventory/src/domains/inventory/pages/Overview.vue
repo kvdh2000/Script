@@ -1,5 +1,5 @@
 <script setup lang="ts">
-	import { inventoryStore } from "../store";
+	import { products, removeProduct } from "../store";
 </script>
 
 <template>
@@ -10,30 +10,51 @@
 			<thead>
 				<tr>
 					<th scope="col">Product</th>
-					<th scope="col">Amount</th>
+					<th scope="col">
+						Actual
+						<br />Amount
+					</th>
+					<th scope="col">
+						Minimum
+						<br />Amount
+					</th>
 					<th scope="col">Edit</th>
 					<th scope="col">Delete</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr
-					v-for="product in inventoryStore.products"
+					v-for="product in products"
 					:key="product.id"
 				>
 					<td class="nameCol">{{ product.name }}</td>
-					<td class="amountCol">{{ product.actualAmount }} / {{ product.minimumAmount }}</td>
+					<td class="amountCol">
+						<input
+							type="number"
+							v-model.number="product.actualAmount"
+						/>
+					</td>
+					<td class="amountCol">
+						{{ product.minimumAmount }}
+					</td>
 					<td class="actionsCol">
 						<router-link :to="`/edit/${product.id}`">
 							<button>Edit</button>
 						</router-link>
 					</td>
 					<td class="actionsCol">
-						<!-- <button @click="removeGrocery(item.id)">Delete</button> -->
+						<button @click="removeProduct(product.id)">Delete</button>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+	<router-link to="/create">
+		<button>Add Product</button>
+	</router-link>
+	<router-link to="/order">
+		<button>Order List</button>
+	</router-link>
 </template>
 
 <style scoped>
@@ -41,17 +62,12 @@
 		font-family: sans-serif;
 	}
 
-	h2 {
+	h1 {
 		margin-top: 15px;
 	}
 
 	button {
 		margin: 5px;
-	}
-
-	tr input {
-		text-align: right;
-		width: 60px;
 	}
 
 	.table-container {

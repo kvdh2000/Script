@@ -1,6 +1,7 @@
 import Overview from "./pages/Overview.vue";
 import Create from "./pages/Create.vue";
 import Edit from "./pages/Edit.vue";
+import Order from "./pages/Order.vue";
 
 export default [
 	{
@@ -17,5 +18,10 @@ export default [
 		path: "/edit/:id",
 		name: "inventory-edit",
 		component: Edit,
+	},
+	{
+		path: "/order",
+		name: "inventory-order",
+		component: Order,
 	},
 ];
