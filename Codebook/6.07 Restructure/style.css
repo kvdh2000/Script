@@ -1,0 +1,19 @@
+* {
+	font-family: sans-serif;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+th,
+td,
+tr {
+	text-align: left;
+	border: 1px solid #888;
+	padding: 10px;
+}
+
+.price {
+	text-align: right;
+}
